@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4f79d561fd93d84b6bd9cf2d13e72154 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>
+    
+    
+<style>
+.leaflet-control-layers-expanded .leaflet-control-layers-list label { display:flex; align-items:center; justify-content:space-between; }
+.leaflet-control-layers-list .switch { position: relative; display:inline-block; width:40px; height:22px; }
+.leaflet-control-layers-list .switch input { display:none; }
+.leaflet-control-layers-list .slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#333; border-radius:22px; }
+.leaflet-control-layers-list .slider:before { position:absolute; content:''; height:18px; width:18px; left:2px; top:2px; background:white; border-radius:50%; transition:0.2s; }
+.leaflet-control-layers-list input:checked + .slider { background:#4CAF50; }
+.leaflet-control-layers-list input:checked + .slider:before { transform: translateX(18px); }
+</style>
+    
+<script>
+function enhanceLayerControls(){ 
+  const container = document.querySelector('.leaflet-control-layers');
+  if(!container) return;
+  const labels = container.querySelectorAll('label');
+  labels.forEach(label=>{
+    const input = label.querySelector('input');
+    if(!input) return;
+    // avoid duplicate processing
+    if(label.querySelector('.switch')) return;
+    const span = document.createElement('span');
+    span.className = 'switch';
+    const slider = document.createElement('span');
+    slider.className = 'slider';
+    // move original checkbox into switch but keep it hidden
+    input.style.display='none';
+    const wrapper = document.createElement('label');
+    wrapper.style.display='inline-block';
+    wrapper.appendChild(input.cloneNode(true));
+    const newInput = wrapper.querySelector('input');
+    newInput.type='checkbox';
+    newInput.checked = input.checked;
+    // when toggled, trigger click on original input to change layer
+    newInput.addEventListener('change', function(){ input.click(); });
+    span.appendChild(newInput);
+    span.appendChild(slider);
+    label.appendChild(span);
+  });
+}
+// run after map loads
+setTimeout(enhanceLayerControls, 500);
+</script>
+    
+<div style="position: fixed; bottom: 30px; left: 30px; width: 220px; background-color: white;
+border:2px solid grey; z-index:9999; font-size:14px; padding:6px;">
+<b>Legenda de Cores</b><br>
+<span style='color:red;'>■</span> Fukuoka<br>
+<span style='color:blue;'>■</span> Saga<br>
+<span style='color:green;'>■</span> Nagasaki<br>
+<span style='color:orange;'>■</span> Miyazaki<br>
+<span style='color:purple;'>■</span> Kagoshima<br>
+<span style='color:pink;'>■</span> Okinawa<br>
+</div>
+    
+            <div class="folium-map" id="map_4f79d561fd93d84b6bd9cf2d13e72154" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_4f79d561fd93d84b6bd9cf2d13e72154 = L.map(
+                "map_4f79d561fd93d84b6bd9cf2d13e72154",
+                {
+                    center: [32.5, 130.7],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 6,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_489b3bb99a66df3b6985a4505604d520 = L.tileLayer(
+                "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"http://cartodb.com/attributions\"\u003eCartoDB\u003c/a\u003e, CartoDB \u003ca href =\"http://cartodb.com/attributions\"\u003eattributions\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_4f79d561fd93d84b6bd9cf2d13e72154);
+        
+    
+            var feature_group_70f2cb79b817945c278f75b45135dc30 = L.featureGroup(
+                {}
+            ).addTo(map_4f79d561fd93d84b6bd9cf2d13e72154);
+        
+    
+            var circle_marker_58afdc9dac045e030a323f672279e96c = L.circleMarker(
+                [33.50519, 130.51667],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_6e992c514d6e588853b00b63a6130150 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e9895cbf3f16b72b62bca7f5f9e4a5a5 = $(`<div id="html_e9895cbf3f16b72b62bca7f5f9e4a5a5" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 1</b><br>(33.50519, 130.51667)</div>`)[0];
+            popup_6e992c514d6e588853b00b63a6130150.setContent(html_e9895cbf3f16b72b62bca7f5f9e4a5a5);
+        
+
+        circle_marker_58afdc9dac045e030a323f672279e96c.bindPopup(popup_6e992c514d6e588853b00b63a6130150)
+        ;
+
+        
+    
+    
+            var circle_marker_2641fd1bd23526471bd6ab1479fda0a1 = L.circleMarker(
+                [33.51333, 130.51517],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_b50d04768d7d5140357fa771c8bd695f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fb60a44ea6dda87399232267e6f0cdea = $(`<div id="html_fb60a44ea6dda87399232267e6f0cdea" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 2</b><br>(33.51333, 130.51517)</div>`)[0];
+            popup_b50d04768d7d5140357fa771c8bd695f.setContent(html_fb60a44ea6dda87399232267e6f0cdea);
+        
+
+        circle_marker_2641fd1bd23526471bd6ab1479fda0a1.bindPopup(popup_b50d04768d7d5140357fa771c8bd695f)
+        ;
+
+        
+    
+    
+            var circle_marker_2645c25d087f7efd0e06293bb4faef47 = L.circleMarker(
+                [33.51935, 130.53137],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_03c6cc42600e83f6bf36b3e4fd80204e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fb13ba38491a05ace2231639267c8d69 = $(`<div id="html_fb13ba38491a05ace2231639267c8d69" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 3</b><br>(33.51935, 130.53137)</div>`)[0];
+            popup_03c6cc42600e83f6bf36b3e4fd80204e.setContent(html_fb13ba38491a05ace2231639267c8d69);
+        
+
+        circle_marker_2645c25d087f7efd0e06293bb4faef47.bindPopup(popup_03c6cc42600e83f6bf36b3e4fd80204e)
+        ;
+
+        
+    
+    
+            var circle_marker_8242141563aa3824e9d9b9eaeb820b0b = L.circleMarker(
+                [33.88498, 130.87621],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_5f6f2ef81037fdeb990d76cc28875697 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5b4ef3b9c4cb6192faaf1dba42f9bd18 = $(`<div id="html_5b4ef3b9c4cb6192faaf1dba42f9bd18" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 4</b><br>(33.88498, 130.87621)</div>`)[0];
+            popup_5f6f2ef81037fdeb990d76cc28875697.setContent(html_5b4ef3b9c4cb6192faaf1dba42f9bd18);
+        
+
+        circle_marker_8242141563aa3824e9d9b9eaeb820b0b.bindPopup(popup_5f6f2ef81037fdeb990d76cc28875697)
+        ;
+
+        
+    
+    
+            var circle_marker_ff49d17e1f582461bc9149397bbde9b3 = L.circleMarker(
+                [33.89052, 130.8846],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_694d1d2cc8777f1c4a1ef6fddfacb769 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f8a26094ef3e568bbf891f4e674e54b4 = $(`<div id="html_f8a26094ef3e568bbf891f4e674e54b4" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 5</b><br>(33.89052, 130.88460)</div>`)[0];
+            popup_694d1d2cc8777f1c4a1ef6fddfacb769.setContent(html_f8a26094ef3e568bbf891f4e674e54b4);
+        
+
+        circle_marker_ff49d17e1f582461bc9149397bbde9b3.bindPopup(popup_694d1d2cc8777f1c4a1ef6fddfacb769)
+        ;
+
+        
+    
+    
+            var circle_marker_b22732063b7a7cf8d269d1ef2fdbde38 = L.circleMarker(
+                [33.87179, 130.80749],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_5d1d7a1ade5cc52d52e6408bcf3486d7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3f936853915314b410a3d52184852bf9 = $(`<div id="html_3f936853915314b410a3d52184852bf9" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 6</b><br>(33.87179, 130.80749)</div>`)[0];
+            popup_5d1d7a1ade5cc52d52e6408bcf3486d7.setContent(html_3f936853915314b410a3d52184852bf9);
+        
+
+        circle_marker_b22732063b7a7cf8d269d1ef2fdbde38.bindPopup(popup_5d1d7a1ade5cc52d52e6408bcf3486d7)
+        ;
+
+        
+    
+    
+            var circle_marker_c784f939f529bd9f262d9c4ca4ce372b = L.circleMarker(
+                [33.94628, 130.96411],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_f1716499f0194c38c6214ec4ef9e600a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_1430167f33d5908393858742555e43db = $(`<div id="html_1430167f33d5908393858742555e43db" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 7</b><br>(33.94628, 130.96411)</div>`)[0];
+            popup_f1716499f0194c38c6214ec4ef9e600a.setContent(html_1430167f33d5908393858742555e43db);
+        
+
+        circle_marker_c784f939f529bd9f262d9c4ca4ce372b.bindPopup(popup_f1716499f0194c38c6214ec4ef9e600a)
+        ;
+
+        
+    
+    
+            var circle_marker_81a4d947879f797e252d1267f16b0649 = L.circleMarker(
+                [33.9572, 130.96161],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_0689d9ebc1d08ad4f034f140d6771fb2 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_472e74721c4c2bee216b5f2b6dd32383 = $(`<div id="html_472e74721c4c2bee216b5f2b6dd32383" style="width: 100.0%; height: 100.0%;"><b>Fukuoka — Ponto 8</b><br>(33.95720, 130.96161)</div>`)[0];
+            popup_0689d9ebc1d08ad4f034f140d6771fb2.setContent(html_472e74721c4c2bee216b5f2b6dd32383);
+        
+
+        circle_marker_81a4d947879f797e252d1267f16b0649.bindPopup(popup_0689d9ebc1d08ad4f034f140d6771fb2)
+        ;
+
+        
+    
+    
+            var circle_marker_feed384d56007b89877d4f323696e481 = L.circleMarker(
+                [33.249, 130.30031],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_da9ff8e4d9ebc505146eb7b97d4104a0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_362319f577f6f1a1e2736981a05aa9d9 = $(`<div id="html_362319f577f6f1a1e2736981a05aa9d9" style="width: 100.0%; height: 100.0%;"><b>Saga — Ponto 1</b><br>(33.24900, 130.30031)</div>`)[0];
+            popup_da9ff8e4d9ebc505146eb7b97d4104a0.setContent(html_362319f577f6f1a1e2736981a05aa9d9);
+        
+
+        circle_marker_feed384d56007b89877d4f323696e481.bindPopup(popup_da9ff8e4d9ebc505146eb7b97d4104a0)
+        ;
+
+        
+    
+    
+            var circle_marker_79488dfe698b28c5b409bdeeef4b755f = L.circleMarker(
+                [33.25075, 130.29892],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_52447b6337554bfe7243e8c51faea9c7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ebe47d5a4b96b80c0b92c90abc11b9b5 = $(`<div id="html_ebe47d5a4b96b80c0b92c90abc11b9b5" style="width: 100.0%; height: 100.0%;"><b>Saga — Ponto 2</b><br>(33.25075, 130.29892)</div>`)[0];
+            popup_52447b6337554bfe7243e8c51faea9c7.setContent(html_ebe47d5a4b96b80c0b92c90abc11b9b5);
+        
+
+        circle_marker_79488dfe698b28c5b409bdeeef4b755f.bindPopup(popup_52447b6337554bfe7243e8c51faea9c7)
+        ;
+
+        
+    
+    
+            var circle_marker_479dbcf1770fe59bc7b3e08be77555d3 = L.circleMarker(
+                [33.2483, 130.3089],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_17b3b283052ed7a481d69f81a4a20529 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9af92c7691c095c018f993249bd165c4 = $(`<div id="html_9af92c7691c095c018f993249bd165c4" style="width: 100.0%; height: 100.0%;"><b>Saga — Ponto 3</b><br>(33.24830, 130.30890)</div>`)[0];
+            popup_17b3b283052ed7a481d69f81a4a20529.setContent(html_9af92c7691c095c018f993249bd165c4);
+        
+
+        circle_marker_479dbcf1770fe59bc7b3e08be77555d3.bindPopup(popup_17b3b283052ed7a481d69f81a4a20529)
+        ;
+
+        
+    
+    
+            var circle_marker_9ebc3eb1f7cee529d5ffa89d403dc578 = L.circleMarker(
+                [33.03573, 129.91948],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_74a5b63f0f3263fe896e845df9f8089b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0199b3e0e00990913014db157e8f969d = $(`<div id="html_0199b3e0e00990913014db157e8f969d" style="width: 100.0%; height: 100.0%;"><b>Nagasaki — Ponto 1</b><br>(33.03573, 129.91948)</div>`)[0];
+            popup_74a5b63f0f3263fe896e845df9f8089b.setContent(html_0199b3e0e00990913014db157e8f969d);
+        
+
+        circle_marker_9ebc3eb1f7cee529d5ffa89d403dc578.bindPopup(popup_74a5b63f0f3263fe896e845df9f8089b)
+        ;
+
+        
+    
+    
+            var circle_marker_6a32686fd3d63dbc5c0f39f81c67ec1c = L.circleMarker(
+                [32.75371, 129.86735],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_4ea74fae358b64fb0c03a2361a805d31 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a761a47a0717bc5ef1ddf385511950da = $(`<div id="html_a761a47a0717bc5ef1ddf385511950da" style="width: 100.0%; height: 100.0%;"><b>Nagasaki — Ponto 2</b><br>(32.75371, 129.86735)</div>`)[0];
+            popup_4ea74fae358b64fb0c03a2361a805d31.setContent(html_a761a47a0717bc5ef1ddf385511950da);
+        
+
+        circle_marker_6a32686fd3d63dbc5c0f39f81c67ec1c.bindPopup(popup_4ea74fae358b64fb0c03a2361a805d31)
+        ;
+
+        
+    
+    
+            var circle_marker_8d39f5181743d6c16c3a6ef7cd3dc18e = L.circleMarker(
+                [32.93311, 129.95827],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_820823c7567a79c27ff072259422c8c1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_bb77e31daa52d6f3963cc8317bd84c6d = $(`<div id="html_bb77e31daa52d6f3963cc8317bd84c6d" style="width: 100.0%; height: 100.0%;"><b>Nagasaki — Ponto 3</b><br>(32.93311, 129.95827)</div>`)[0];
+            popup_820823c7567a79c27ff072259422c8c1.setContent(html_bb77e31daa52d6f3963cc8317bd84c6d);
+        
+
+        circle_marker_8d39f5181743d6c16c3a6ef7cd3dc18e.bindPopup(popup_820823c7567a79c27ff072259422c8c1)
+        ;
+
+        
+    
+    
+            var circle_marker_9c3a2cc285c9ea6dae2db1227018903b = L.circleMarker(
+                [33.16398, 129.72416],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_96ba2e1f07506aa511f309cc8ad9bb43 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_4c878ee4b5b4bfe868f076431c5ea1b8 = $(`<div id="html_4c878ee4b5b4bfe868f076431c5ea1b8" style="width: 100.0%; height: 100.0%;"><b>Nagasaki — Ponto 4</b><br>(33.16398, 129.72416)</div>`)[0];
+            popup_96ba2e1f07506aa511f309cc8ad9bb43.setContent(html_4c878ee4b5b4bfe868f076431c5ea1b8);
+        
+
+        circle_marker_9c3a2cc285c9ea6dae2db1227018903b.bindPopup(popup_96ba2e1f07506aa511f309cc8ad9bb43)
+        ;
+
+        
+    
+    
+            var circle_marker_e96d20a7cdc0239467b57d6b7c7ec32e = L.circleMarker(
+                [32.9864, 129.11274],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_31bcb7e77dff43638bf3ba91baebf410 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_33bbc5a1c787fc355fdb3f99bd8d669e = $(`<div id="html_33bbc5a1c787fc355fdb3f99bd8d669e" style="width: 100.0%; height: 100.0%;"><b>Nagasaki — Ponto 5</b><br>(32.98640, 129.11274)</div>`)[0];
+            popup_31bcb7e77dff43638bf3ba91baebf410.setContent(html_33bbc5a1c787fc355fdb3f99bd8d669e);
+        
+
+        circle_marker_e96d20a7cdc0239467b57d6b7c7ec32e.bindPopup(popup_31bcb7e77dff43638bf3ba91baebf410)
+        ;
+
+        
+    
+    
+            var circle_marker_ad7f2d9a9ffaf092c70b70a74b3380fb = L.circleMarker(
+                [32.74084, 130.26111],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_a6451f9bfbd1d32559b64ddd255cdaf0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c72c297f66124339f320e16091ea7ce4 = $(`<div id="html_c72c297f66124339f320e16091ea7ce4" style="width: 100.0%; height: 100.0%;"><b>Nagasaki — Ponto 6</b><br>(32.74084, 130.26111)</div>`)[0];
+            popup_a6451f9bfbd1d32559b64ddd255cdaf0.setContent(html_c72c297f66124339f320e16091ea7ce4);
+        
+
+        circle_marker_ad7f2d9a9ffaf092c70b70a74b3380fb.bindPopup(popup_a6451f9bfbd1d32559b64ddd255cdaf0)
+        ;
+
+        
+    
+    
+            var circle_marker_b983bccf9c2ca3891394804ef60efd32 = L.circleMarker(
+                [31.99897, 131.25375],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_b694dd690657fa59953bf2fec08b0194 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0b72648b0f6d62ff9722e63af6880817 = $(`<div id="html_0b72648b0f6d62ff9722e63af6880817" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 1</b><br>(31.99897, 131.25375)</div>`)[0];
+            popup_b694dd690657fa59953bf2fec08b0194.setContent(html_0b72648b0f6d62ff9722e63af6880817);
+        
+
+        circle_marker_b983bccf9c2ca3891394804ef60efd32.bindPopup(popup_b694dd690657fa59953bf2fec08b0194)
+        ;
+
+        
+    
+    
+            var circle_marker_9125051627d92584355d6d97c1083267 = L.circleMarker(
+                [32.0503, 130.80596],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_0c67261982ff966a046ed88dfb42fc99 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_44b25e32f83299e309308b445c1364ab = $(`<div id="html_44b25e32f83299e309308b445c1364ab" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 2</b><br>(32.05030, 130.80596)</div>`)[0];
+            popup_0c67261982ff966a046ed88dfb42fc99.setContent(html_44b25e32f83299e309308b445c1364ab);
+        
+
+        circle_marker_9125051627d92584355d6d97c1083267.bindPopup(popup_0c67261982ff966a046ed88dfb42fc99)
+        ;
+
+        
+    
+    
+            var circle_marker_01ee16e0f8008bb30dd3d8a165d230b9 = L.circleMarker(
+                [32.67905, 131.21004],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_00d1e163b4b264c79f4e72bf705eae4d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ba9e4210e31ff35dd7484fa213ac7b96 = $(`<div id="html_ba9e4210e31ff35dd7484fa213ac7b96" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 3</b><br>(32.67905, 131.21004)</div>`)[0];
+            popup_00d1e163b4b264c79f4e72bf705eae4d.setContent(html_ba9e4210e31ff35dd7484fa213ac7b96);
+        
+
+        circle_marker_01ee16e0f8008bb30dd3d8a165d230b9.bindPopup(popup_00d1e163b4b264c79f4e72bf705eae4d)
+        ;
+
+        
+    
+    
+            var circle_marker_93ae16a1190b35fb86911a87d3ef334c = L.circleMarker(
+                [32.66064, 131.38863],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_91b1fc63739666e71a791ea2823b3e5c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_37079f2d96cb445e26576e98ca0b2024 = $(`<div id="html_37079f2d96cb445e26576e98ca0b2024" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 4</b><br>(32.66064, 131.38863)</div>`)[0];
+            popup_91b1fc63739666e71a791ea2823b3e5c.setContent(html_37079f2d96cb445e26576e98ca0b2024);
+        
+
+        circle_marker_93ae16a1190b35fb86911a87d3ef334c.bindPopup(popup_91b1fc63739666e71a791ea2823b3e5c)
+        ;
+
+        
+    
+    
+            var circle_marker_7082c927cfa432320fc8345ca5f60745 = L.circleMarker(
+                [32.42539, 131.62772],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_8ed22a20efe6aa6182986272393d3791 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d63289345d6dc859a8c56fdd97f2a39f = $(`<div id="html_d63289345d6dc859a8c56fdd97f2a39f" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 5</b><br>(32.42539, 131.62772)</div>`)[0];
+            popup_8ed22a20efe6aa6182986272393d3791.setContent(html_d63289345d6dc859a8c56fdd97f2a39f);
+        
+
+        circle_marker_7082c927cfa432320fc8345ca5f60745.bindPopup(popup_8ed22a20efe6aa6182986272393d3791)
+        ;
+
+        
+    
+    
+            var circle_marker_59480317ec17df20d52fc818c6fa6ecf = L.circleMarker(
+                [32.48702, 131.67673],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_6e85f1406ba0259f1e12fcd6571c9776 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f983be7999d95215361bab6f864d991e = $(`<div id="html_f983be7999d95215361bab6f864d991e" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 6</b><br>(32.48702, 131.67673)</div>`)[0];
+            popup_6e85f1406ba0259f1e12fcd6571c9776.setContent(html_f983be7999d95215361bab6f864d991e);
+        
+
+        circle_marker_59480317ec17df20d52fc818c6fa6ecf.bindPopup(popup_6e85f1406ba0259f1e12fcd6571c9776)
+        ;
+
+        
+    
+    
+            var circle_marker_ee3a4edd0c0a01840dd236de6e1d25c3 = L.circleMarker(
+                [32.19149, 131.52898],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_94e0bb907358cb109e2706a8dfab26f1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_bc61988a7f3d09afc4d4156e3a1ff0ee = $(`<div id="html_bc61988a7f3d09afc4d4156e3a1ff0ee" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 7</b><br>(32.19149, 131.52898)</div>`)[0];
+            popup_94e0bb907358cb109e2706a8dfab26f1.setContent(html_bc61988a7f3d09afc4d4156e3a1ff0ee);
+        
+
+        circle_marker_ee3a4edd0c0a01840dd236de6e1d25c3.bindPopup(popup_94e0bb907358cb109e2706a8dfab26f1)
+        ;
+
+        
+    
+    
+            var circle_marker_4af60e5dcfe561cf61d321d0e3b36880 = L.circleMarker(
+                [32.16824, 131.47828],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_1a985e7e13bcc459aa775e6ef0ffb68c = L.popup({"maxWidth": "100%"});
+
+        
+            var html_8e3811da8d1875acd1422308c33819ab = $(`<div id="html_8e3811da8d1875acd1422308c33819ab" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 8</b><br>(32.16824, 131.47828)</div>`)[0];
+            popup_1a985e7e13bcc459aa775e6ef0ffb68c.setContent(html_8e3811da8d1875acd1422308c33819ab);
+        
+
+        circle_marker_4af60e5dcfe561cf61d321d0e3b36880.bindPopup(popup_1a985e7e13bcc459aa775e6ef0ffb68c)
+        ;
+
+        
+    
+    
+            var circle_marker_a07eb8159da294153fec6a99788d3011 = L.circleMarker(
+                [31.9575, 131.12597],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_0f4d89e68d953a20c8d478ad3d658793 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e610e932b0963ea85a6aa543799b2f89 = $(`<div id="html_e610e932b0963ea85a6aa543799b2f89" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 9</b><br>(31.95750, 131.12597)</div>`)[0];
+            popup_0f4d89e68d953a20c8d478ad3d658793.setContent(html_e610e932b0963ea85a6aa543799b2f89);
+        
+
+        circle_marker_a07eb8159da294153fec6a99788d3011.bindPopup(popup_0f4d89e68d953a20c8d478ad3d658793)
+        ;
+
+        
+    
+    
+            var circle_marker_bd13270b14e8e69612b4f7904d68c3ce = L.circleMarker(
+                [31.98859, 131.32191],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_b4f0993a558c6ecb4e0274a88cf5447d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_20d740c96b4c399450ff9fca068f2ae4 = $(`<div id="html_20d740c96b4c399450ff9fca068f2ae4" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 10</b><br>(31.98859, 131.32191)</div>`)[0];
+            popup_b4f0993a558c6ecb4e0274a88cf5447d.setContent(html_20d740c96b4c399450ff9fca068f2ae4);
+        
+
+        circle_marker_bd13270b14e8e69612b4f7904d68c3ce.bindPopup(popup_b4f0993a558c6ecb4e0274a88cf5447d)
+        ;
+
+        
+    
+    
+            var circle_marker_1240ef17af4fde20df69229c47c86f48 = L.circleMarker(
+                [31.36624, 131.3328],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_ef81865b1f9de86105d0bf6fcea0ee99 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6865183a661e2836c1d67a6019560ebb = $(`<div id="html_6865183a661e2836c1d67a6019560ebb" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 11</b><br>(31.36624, 131.33280)</div>`)[0];
+            popup_ef81865b1f9de86105d0bf6fcea0ee99.setContent(html_6865183a661e2836c1d67a6019560ebb);
+        
+
+        circle_marker_1240ef17af4fde20df69229c47c86f48.bindPopup(popup_ef81865b1f9de86105d0bf6fcea0ee99)
+        ;
+
+        
+    
+    
+            var circle_marker_ec2db5b8da13753f9debdf6a19c958cb = L.circleMarker(
+                [31.73375, 131.1203],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_13e6711fbcba27ab54a5afca39a3f59d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3faef68ac19ff66704e6d7f764304146 = $(`<div id="html_3faef68ac19ff66704e6d7f764304146" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 12</b><br>(31.73375, 131.12030)</div>`)[0];
+            popup_13e6711fbcba27ab54a5afca39a3f59d.setContent(html_3faef68ac19ff66704e6d7f764304146);
+        
+
+        circle_marker_ec2db5b8da13753f9debdf6a19c958cb.bindPopup(popup_13e6711fbcba27ab54a5afca39a3f59d)
+        ;
+
+        
+    
+    
+            var circle_marker_2289fbb217bdc4e3af2f4425ec8d985a = L.circleMarker(
+                [32.43197, 131.46755],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_f43d57eb52d76b566cd89157a699359d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9094fa26eb8e882b142a29b141278429 = $(`<div id="html_9094fa26eb8e882b142a29b141278429" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 13</b><br>(32.43197, 131.46755)</div>`)[0];
+            popup_f43d57eb52d76b566cd89157a699359d.setContent(html_9094fa26eb8e882b142a29b141278429);
+        
+
+        circle_marker_2289fbb217bdc4e3af2f4425ec8d985a.bindPopup(popup_f43d57eb52d76b566cd89157a699359d)
+        ;
+
+        
+    
+    
+            var circle_marker_d4f32613be3965c62f67b535ade2b8b0 = L.circleMarker(
+                [31.72522, 131.06617],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_2b16c6ea1280e7832eb145de624733a5 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_da7b2cd7813b11d43c2ebca9c9d11154 = $(`<div id="html_da7b2cd7813b11d43c2ebca9c9d11154" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 14</b><br>(31.72522, 131.06617)</div>`)[0];
+            popup_2b16c6ea1280e7832eb145de624733a5.setContent(html_da7b2cd7813b11d43c2ebca9c9d11154);
+        
+
+        circle_marker_d4f32613be3965c62f67b535ade2b8b0.bindPopup(popup_2b16c6ea1280e7832eb145de624733a5)
+        ;
+
+        
+    
+    
+            var circle_marker_bf83212530b46332195cf7eacb05719b = L.circleMarker(
+                [31.8075, 131.45783],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_8dc3134cedc9f26b3dee52b969f9b9ee = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9196f5c47b66899a9492e0d1412fabb7 = $(`<div id="html_9196f5c47b66899a9492e0d1412fabb7" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 15</b><br>(31.80750, 131.45783)</div>`)[0];
+            popup_8dc3134cedc9f26b3dee52b969f9b9ee.setContent(html_9196f5c47b66899a9492e0d1412fabb7);
+        
+
+        circle_marker_bf83212530b46332195cf7eacb05719b.bindPopup(popup_8dc3134cedc9f26b3dee52b969f9b9ee)
+        ;
+
+        
+    
+    
+            var circle_marker_efe6b1dda1b5abe89daba245de4eb0c0 = L.circleMarker(
+                [32.50981, 131.33149],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_9b63588a006e18cca685dde423e047c4 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_6ff2e19841c4d22c86dafbb5317ababe = $(`<div id="html_6ff2e19841c4d22c86dafbb5317ababe" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 16</b><br>(32.50981, 131.33149)</div>`)[0];
+            popup_9b63588a006e18cca685dde423e047c4.setContent(html_6ff2e19841c4d22c86dafbb5317ababe);
+        
+
+        circle_marker_efe6b1dda1b5abe89daba245de4eb0c0.bindPopup(popup_9b63588a006e18cca685dde423e047c4)
+        ;
+
+        
+    
+    
+            var circle_marker_45832b41f8674d06fe23114401a13cf5 = L.circleMarker(
+                [31.58793, 131.4017],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_18979f049e81b71f7fb709f5da295a37 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_856b07093ba201e7bbba5cf30fb8667a = $(`<div id="html_856b07093ba201e7bbba5cf30fb8667a" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 17</b><br>(31.58793, 131.40170)</div>`)[0];
+            popup_18979f049e81b71f7fb709f5da295a37.setContent(html_856b07093ba201e7bbba5cf30fb8667a);
+        
+
+        circle_marker_45832b41f8674d06fe23114401a13cf5.bindPopup(popup_18979f049e81b71f7fb709f5da295a37)
+        ;
+
+        
+    
+    
+            var circle_marker_e1fc15960c9594499618b24ade37ad99 = L.circleMarker(
+                [32.22323, 131.16329],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_158cf4ab8e40d316b20491660223f889 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_d5760f696173830fb1c9ff7dc35051ff = $(`<div id="html_d5760f696173830fb1c9ff7dc35051ff" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 18</b><br>(32.22323, 131.16329)</div>`)[0];
+            popup_158cf4ab8e40d316b20491660223f889.setContent(html_d5760f696173830fb1c9ff7dc35051ff);
+        
+
+        circle_marker_e1fc15960c9594499618b24ade37ad99.bindPopup(popup_158cf4ab8e40d316b20491660223f889)
+        ;
+
+        
+    
+    
+            var circle_marker_9cfbd95aaaf3e23995511a7e3bd0d4b7 = L.circleMarker(
+                [32.6847, 131.80108],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_950ad85b143e4a51061eb25e763d0822 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_dfd247bad2926ddba43ed41b77d466b1 = $(`<div id="html_dfd247bad2926ddba43ed41b77d466b1" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 19</b><br>(32.68470, 131.80108)</div>`)[0];
+            popup_950ad85b143e4a51061eb25e763d0822.setContent(html_dfd247bad2926ddba43ed41b77d466b1);
+        
+
+        circle_marker_9cfbd95aaaf3e23995511a7e3bd0d4b7.bindPopup(popup_950ad85b143e4a51061eb25e763d0822)
+        ;
+
+        
+    
+    
+            var circle_marker_dce2d626e583343c171816b968c15e71 = L.circleMarker(
+                [32.10662, 131.40451],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_e45a498418e6308668ca702c753cc4af = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b517cad43910ec384494b8bed3d91f97 = $(`<div id="html_b517cad43910ec384494b8bed3d91f97" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 20</b><br>(32.10662, 131.40451)</div>`)[0];
+            popup_e45a498418e6308668ca702c753cc4af.setContent(html_b517cad43910ec384494b8bed3d91f97);
+        
+
+        circle_marker_dce2d626e583343c171816b968c15e71.bindPopup(popup_e45a498418e6308668ca702c753cc4af)
+        ;
+
+        
+    
+    
+            var circle_marker_df8ba191f57bbcae65b6e6f1e377cf52 = L.circleMarker(
+                [32.45815, 131.15383],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_c75758d7624286b51137ce1e6daae3f1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_31b0f6bfb99df28b6925d2f438f619a8 = $(`<div id="html_31b0f6bfb99df28b6925d2f438f619a8" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 21</b><br>(32.45815, 131.15383)</div>`)[0];
+            popup_c75758d7624286b51137ce1e6daae3f1.setContent(html_31b0f6bfb99df28b6925d2f438f619a8);
+        
+
+        circle_marker_df8ba191f57bbcae65b6e6f1e377cf52.bindPopup(popup_c75758d7624286b51137ce1e6daae3f1)
+        ;
+
+        
+    
+    
+            var circle_marker_13b67b33a946f94400c34eac6589af8d = L.circleMarker(
+                [32.0739, 131.49571],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_78550ac90939bd6ef66891a9bc05e1d5 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_def16aa92056e11508221eed77d0d727 = $(`<div id="html_def16aa92056e11508221eed77d0d727" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 22</b><br>(32.07390, 131.49571)</div>`)[0];
+            popup_78550ac90939bd6ef66891a9bc05e1d5.setContent(html_def16aa92056e11508221eed77d0d727);
+        
+
+        circle_marker_13b67b33a946f94400c34eac6589af8d.bindPopup(popup_78550ac90939bd6ef66891a9bc05e1d5)
+        ;
+
+        
+    
+    
+            var circle_marker_d22358611cb5b9babe72580ca02b8000 = L.circleMarker(
+                [32.70774, 131.30588],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_07a66fab3952dc4700a3053ce8a5cddf = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b37802897508f01f3e372ac581861f43 = $(`<div id="html_b37802897508f01f3e372ac581861f43" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 23</b><br>(32.70774, 131.30588)</div>`)[0];
+            popup_07a66fab3952dc4700a3053ce8a5cddf.setContent(html_b37802897508f01f3e372ac581861f43);
+        
+
+        circle_marker_d22358611cb5b9babe72580ca02b8000.bindPopup(popup_07a66fab3952dc4700a3053ce8a5cddf)
+        ;
+
+        
+    
+    
+            var circle_marker_165be1be688e7c1c49882db5535d9fb0 = L.circleMarker(
+                [31.90723, 130.96018],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_2f909f25ffaa371e926987083991b47d = L.popup({"maxWidth": "100%"});
+
+        
+            var html_39eaa3157f1da8d3656036cdefe353af = $(`<div id="html_39eaa3157f1da8d3656036cdefe353af" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 24</b><br>(31.90723, 130.96018)</div>`)[0];
+            popup_2f909f25ffaa371e926987083991b47d.setContent(html_39eaa3157f1da8d3656036cdefe353af);
+        
+
+        circle_marker_165be1be688e7c1c49882db5535d9fb0.bindPopup(popup_2f909f25ffaa371e926987083991b47d)
+        ;
+
+        
+    
+    
+            var circle_marker_52beb20de647cbd697cf85e7656143c8 = L.circleMarker(
+                [32.11595, 131.53284],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_4e7ce55b290ff326a396c0dec4d45fd0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b6a342a868052600ca1ea438cc985ee0 = $(`<div id="html_b6a342a868052600ca1ea438cc985ee0" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 25</b><br>(32.11595, 131.53284)</div>`)[0];
+            popup_4e7ce55b290ff326a396c0dec4d45fd0.setContent(html_b6a342a868052600ca1ea438cc985ee0);
+        
+
+        circle_marker_52beb20de647cbd697cf85e7656143c8.bindPopup(popup_4e7ce55b290ff326a396c0dec4d45fd0)
+        ;
+
+        
+    
+    
+            var circle_marker_a63d309e1a4e840a07412062bcafa880 = L.circleMarker(
+                [32.2609, 131.55757],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_30601a555fe56ffa54afdbf00dd44bb3 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_4ef710ee6451466e9aef3e1585ac6002 = $(`<div id="html_4ef710ee6451466e9aef3e1585ac6002" style="width: 100.0%; height: 100.0%;"><b>Miyazaki — Ponto 26</b><br>(32.26090, 131.55757)</div>`)[0];
+            popup_30601a555fe56ffa54afdbf00dd44bb3.setContent(html_4ef710ee6451466e9aef3e1585ac6002);
+        
+
+        circle_marker_a63d309e1a4e840a07412062bcafa880.bindPopup(popup_30601a555fe56ffa54afdbf00dd44bb3)
+        ;
+
+        
+    
+    
+            var circle_marker_39dfe237fd6827c05ef52aa78e57ded6 = L.circleMarker(
+                [31.22961, 130.65202],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_655ddaad6e014364c954c86858955b10 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_b326906cab3ca86b26d37ec5942911c1 = $(`<div id="html_b326906cab3ca86b26d37ec5942911c1" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 1</b><br>(31.22961, 130.65202)</div>`)[0];
+            popup_655ddaad6e014364c954c86858955b10.setContent(html_b326906cab3ca86b26d37ec5942911c1);
+        
+
+        circle_marker_39dfe237fd6827c05ef52aa78e57ded6.bindPopup(popup_655ddaad6e014364c954c86858955b10)
+        ;
+
+        
+    
+    
+            var circle_marker_e9b8aed7e12b2b80ede0438ff1ead8c1 = L.circleMarker(
+                [31.23544, 130.64138],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_a5d8092de20c3bc374c88624b3e287c5 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_58587f603a4ae50bbaa99a1ea20178f5 = $(`<div id="html_58587f603a4ae50bbaa99a1ea20178f5" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 2</b><br>(31.23544, 130.64138)</div>`)[0];
+            popup_a5d8092de20c3bc374c88624b3e287c5.setContent(html_58587f603a4ae50bbaa99a1ea20178f5);
+        
+
+        circle_marker_e9b8aed7e12b2b80ede0438ff1ead8c1.bindPopup(popup_a5d8092de20c3bc374c88624b3e287c5)
+        ;
+
+        
+    
+    
+            var circle_marker_dcd1c7c5f87c75148458e0c8685e1134 = L.circleMarker(
+                [31.23105, 130.64461],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_11d09c597e47fcf33e41b4c5ad415899 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5b62a5bf2498cceac16d71d8d2ca042b = $(`<div id="html_5b62a5bf2498cceac16d71d8d2ca042b" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 3</b><br>(31.23105, 130.64461)</div>`)[0];
+            popup_11d09c597e47fcf33e41b4c5ad415899.setContent(html_5b62a5bf2498cceac16d71d8d2ca042b);
+        
+
+        circle_marker_dcd1c7c5f87c75148458e0c8685e1134.bindPopup(popup_11d09c597e47fcf33e41b4c5ad415899)
+        ;
+
+        
+    
+    
+            var circle_marker_0668ba58aaa23611fe3e6d50466157d3 = L.circleMarker(
+                [31.26388, 130.66291],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_3c7e85f2fe951c7dc5d721a35ef2a466 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_5f4ba3d2670e7e237690f0945967b7c8 = $(`<div id="html_5f4ba3d2670e7e237690f0945967b7c8" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 4</b><br>(31.26388, 130.66291)</div>`)[0];
+            popup_3c7e85f2fe951c7dc5d721a35ef2a466.setContent(html_5f4ba3d2670e7e237690f0945967b7c8);
+        
+
+        circle_marker_0668ba58aaa23611fe3e6d50466157d3.bindPopup(popup_3c7e85f2fe951c7dc5d721a35ef2a466)
+        ;
+
+        
+    
+    
+            var circle_marker_f674089a2bbf7b4f94c4060a7526ae01 = L.circleMarker(
+                [31.23683, 130.64219],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_b804c30ef55d4fd4e4f987020f1a5ec1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_244f68de2671fc97676f5f7c4b9b41d1 = $(`<div id="html_244f68de2671fc97676f5f7c4b9b41d1" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 5</b><br>(31.23683, 130.64219)</div>`)[0];
+            popup_b804c30ef55d4fd4e4f987020f1a5ec1.setContent(html_244f68de2671fc97676f5f7c4b9b41d1);
+        
+
+        circle_marker_f674089a2bbf7b4f94c4060a7526ae01.bindPopup(popup_b804c30ef55d4fd4e4f987020f1a5ec1)
+        ;
+
+        
+    
+    
+            var circle_marker_08c0d25f14dfef1a14bce4ff879688c1 = L.circleMarker(
+                [31.23827, 130.645],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_5b6495a27e8b2fd99ae43a11d5b5a632 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_82c19cd01c392bb8624ed677e8a824a8 = $(`<div id="html_82c19cd01c392bb8624ed677e8a824a8" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 6</b><br>(31.23827, 130.64500)</div>`)[0];
+            popup_5b6495a27e8b2fd99ae43a11d5b5a632.setContent(html_82c19cd01c392bb8624ed677e8a824a8);
+        
+
+        circle_marker_08c0d25f14dfef1a14bce4ff879688c1.bindPopup(popup_5b6495a27e8b2fd99ae43a11d5b5a632)
+        ;
+
+        
+    
+    
+            var circle_marker_1943527843c956b771a88fb3abd458a4 = L.circleMarker(
+                [31.25527, 130.64763],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_8191e011561ac8166aada767171ba5af = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2738f3ea7085bdefc0dd39fb3779bf46 = $(`<div id="html_2738f3ea7085bdefc0dd39fb3779bf46" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 7</b><br>(31.25527, 130.64763)</div>`)[0];
+            popup_8191e011561ac8166aada767171ba5af.setContent(html_2738f3ea7085bdefc0dd39fb3779bf46);
+        
+
+        circle_marker_1943527843c956b771a88fb3abd458a4.bindPopup(popup_8191e011561ac8166aada767171ba5af)
+        ;
+
+        
+    
+    
+            var circle_marker_7820579922ced31fe43ca9286bdcb5b8 = L.circleMarker(
+                [31.228, 130.65302],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_89c49dce400558d018579c58096fc785 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9a2c10b3a3384b264addd7da71e4ea3a = $(`<div id="html_9a2c10b3a3384b264addd7da71e4ea3a" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 8</b><br>(31.22800, 130.65302)</div>`)[0];
+            popup_89c49dce400558d018579c58096fc785.setContent(html_9a2c10b3a3384b264addd7da71e4ea3a);
+        
+
+        circle_marker_7820579922ced31fe43ca9286bdcb5b8.bindPopup(popup_89c49dce400558d018579c58096fc785)
+        ;
+
+        
+    
+    
+            var circle_marker_49747fa62683c305aabf357823ab3f11 = L.circleMarker(
+                [31.23719, 130.64286],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_c463cce5930408217817a0f2166afcae = L.popup({"maxWidth": "100%"});
+
+        
+            var html_48efad0e08ef523d5abaa32e34f16851 = $(`<div id="html_48efad0e08ef523d5abaa32e34f16851" style="width: 100.0%; height: 100.0%;"><b>Kagoshima — Ponto 9</b><br>(31.23719, 130.64286)</div>`)[0];
+            popup_c463cce5930408217817a0f2166afcae.setContent(html_48efad0e08ef523d5abaa32e34f16851);
+        
+
+        circle_marker_49747fa62683c305aabf357823ab3f11.bindPopup(popup_c463cce5930408217817a0f2166afcae)
+        ;
+
+        
+    
+    
+            var circle_marker_607d3ec254f2a476bc424d036e21ac1f = L.circleMarker(
+                [26.31573, 127.75361],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_fb3abbd128db4fbbf40b06b765b0bae3 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_712196c62111070bb5990c84c3fbf419 = $(`<div id="html_712196c62111070bb5990c84c3fbf419" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 1</b><br>(26.31573, 127.75361)</div>`)[0];
+            popup_fb3abbd128db4fbbf40b06b765b0bae3.setContent(html_712196c62111070bb5990c84c3fbf419);
+        
+
+        circle_marker_607d3ec254f2a476bc424d036e21ac1f.bindPopup(popup_fb3abbd128db4fbbf40b06b765b0bae3)
+        ;
+
+        
+    
+    
+            var circle_marker_98d93560c01bd741fe96892fe1455130 = L.circleMarker(
+                [26.28139, 127.73221],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_30a6a4d1b7bb9f456a1a160bd4c46fd1 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_651f8ee1b882369094ca85ff28b50dbb = $(`<div id="html_651f8ee1b882369094ca85ff28b50dbb" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 2</b><br>(26.28139, 127.73221)</div>`)[0];
+            popup_30a6a4d1b7bb9f456a1a160bd4c46fd1.setContent(html_651f8ee1b882369094ca85ff28b50dbb);
+        
+
+        circle_marker_98d93560c01bd741fe96892fe1455130.bindPopup(popup_30a6a4d1b7bb9f456a1a160bd4c46fd1)
+        ;
+
+        
+    
+    
+            var circle_marker_543d249e7d1b930d11c5e31697bd56d4 = L.circleMarker(
+                [26.33741, 124.15694],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_982b69923169db742c103fee9b76c9ee = L.popup({"maxWidth": "100%"});
+
+        
+            var html_edef1818ce92f897e1b3196d99b1b555 = $(`<div id="html_edef1818ce92f897e1b3196d99b1b555" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 3</b><br>(26.33741, 124.15694)</div>`)[0];
+            popup_982b69923169db742c103fee9b76c9ee.setContent(html_edef1818ce92f897e1b3196d99b1b555);
+        
+
+        circle_marker_543d249e7d1b930d11c5e31697bd56d4.bindPopup(popup_982b69923169db742c103fee9b76c9ee)
+        ;
+
+        
+    
+    
+            var circle_marker_f660b416b5df45212c303e305b46eacd = L.circleMarker(
+                [26.13828, 127.66133],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_6aa3ea2f11e63dff5952ba28b4803370 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_565ffe8f43b22ed9dfc6d9bf727ca51f = $(`<div id="html_565ffe8f43b22ed9dfc6d9bf727ca51f" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 4</b><br>(26.13828, 127.66133)</div>`)[0];
+            popup_6aa3ea2f11e63dff5952ba28b4803370.setContent(html_565ffe8f43b22ed9dfc6d9bf727ca51f);
+        
+
+        circle_marker_f660b416b5df45212c303e305b46eacd.bindPopup(popup_6aa3ea2f11e63dff5952ba28b4803370)
+        ;
+
+        
+    
+    
+            var circle_marker_9caa43125215d561e44c2187dead5a3d = L.circleMarker(
+                [26.37398, 126.78892],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_15842d81b6d05992a3b96c6a02f883b6 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2fa6a4151e66e11a834030600bbfbb2f = $(`<div id="html_2fa6a4151e66e11a834030600bbfbb2f" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 5</b><br>(26.37398, 126.78892)</div>`)[0];
+            popup_15842d81b6d05992a3b96c6a02f883b6.setContent(html_2fa6a4151e66e11a834030600bbfbb2f);
+        
+
+        circle_marker_9caa43125215d561e44c2187dead5a3d.bindPopup(popup_15842d81b6d05992a3b96c6a02f883b6)
+        ;
+
+        
+    
+    
+            var circle_marker_6b0df7f592dbff6ad91db86c2041bb14 = L.circleMarker(
+                [24.73496, 125.26308],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_dcf13545d5ca384d048668dee64ae8b0 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_52750c707850c6156f3c60bdca3deb67 = $(`<div id="html_52750c707850c6156f3c60bdca3deb67" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 6</b><br>(24.73496, 125.26308)</div>`)[0];
+            popup_dcf13545d5ca384d048668dee64ae8b0.setContent(html_52750c707850c6156f3c60bdca3deb67);
+        
+
+        circle_marker_6b0df7f592dbff6ad91db86c2041bb14.bindPopup(popup_dcf13545d5ca384d048668dee64ae8b0)
+        ;
+
+        
+    
+    
+            var circle_marker_521010bf75869df1289a413ff218fe48 = L.circleMarker(
+                [26.69169, 127.87797],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_ed4418ef36894efb3c8e234f253c68c3 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_437a8a863f2e5900d4cb1f64476b8d50 = $(`<div id="html_437a8a863f2e5900d4cb1f64476b8d50" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 7</b><br>(26.69169, 127.87797)</div>`)[0];
+            popup_ed4418ef36894efb3c8e234f253c68c3.setContent(html_437a8a863f2e5900d4cb1f64476b8d50);
+        
+
+        circle_marker_521010bf75869df1289a413ff218fe48.bindPopup(popup_ed4418ef36894efb3c8e234f253c68c3)
+        ;
+
+        
+    
+    
+            var circle_marker_f4cfacaa6fa0e1a5d7847ffc5af6b7a2 = L.circleMarker(
+                [26.58735, 127.98574],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_8d0c0cf1c5d6e15e32140e31ebb6164a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cb1979ec8e541cb2ac559a7b90bf9663 = $(`<div id="html_cb1979ec8e541cb2ac559a7b90bf9663" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 8</b><br>(26.58735, 127.98574)</div>`)[0];
+            popup_8d0c0cf1c5d6e15e32140e31ebb6164a.setContent(html_cb1979ec8e541cb2ac559a7b90bf9663);
+        
+
+        circle_marker_f4cfacaa6fa0e1a5d7847ffc5af6b7a2.bindPopup(popup_8d0c0cf1c5d6e15e32140e31ebb6164a)
+        ;
+
+        
+    
+    
+            var circle_marker_da06f4174766f6ff89dea0dd9fcd736f = L.circleMarker(
+                [26.21641, 127.68942],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_c5bd85b4c0edc159f12c12cb9f480cf4 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_409a756fa2aae55bcfe5dcd7d62c6892 = $(`<div id="html_409a756fa2aae55bcfe5dcd7d62c6892" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 9</b><br>(26.21641, 127.68942)</div>`)[0];
+            popup_c5bd85b4c0edc159f12c12cb9f480cf4.setContent(html_409a756fa2aae55bcfe5dcd7d62c6892);
+        
+
+        circle_marker_da06f4174766f6ff89dea0dd9fcd736f.bindPopup(popup_c5bd85b4c0edc159f12c12cb9f480cf4)
+        ;
+
+        
+    
+    
+            var circle_marker_151d15007472f9a6fa5e1a05ae1edf1b = L.circleMarker(
+                [26.16911, 127.82708],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_50d506e0e145a213794aa9f912400daa = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2c192662c065424349af8a660bf767bd = $(`<div id="html_2c192662c065424349af8a660bf767bd" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 10</b><br>(26.16911, 127.82708)</div>`)[0];
+            popup_50d506e0e145a213794aa9f912400daa.setContent(html_2c192662c065424349af8a660bf767bd);
+        
+
+        circle_marker_151d15007472f9a6fa5e1a05ae1edf1b.bindPopup(popup_50d506e0e145a213794aa9f912400daa)
+        ;
+
+        
+    
+    
+            var circle_marker_9d2b14f919389f98785c8c307ef5e22f = L.circleMarker(
+                [26.32766, 127.803],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_e5837d7e99c28ca8db252b7d5da88404 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_13b0b9d0b79ceb76f8f10e9265f3ec3c = $(`<div id="html_13b0b9d0b79ceb76f8f10e9265f3ec3c" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 11</b><br>(26.32766, 127.80300)</div>`)[0];
+            popup_e5837d7e99c28ca8db252b7d5da88404.setContent(html_13b0b9d0b79ceb76f8f10e9265f3ec3c);
+        
+
+        circle_marker_9d2b14f919389f98785c8c307ef5e22f.bindPopup(popup_e5837d7e99c28ca8db252b7d5da88404)
+        ;
+
+        
+    
+    
+            var circle_marker_80d423c40e15fba74a5b29933098ecff = L.circleMarker(
+                [26.14911, 127.34734],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_37e0d9e373f3a838257ad86d6b5eec07 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_781556bf7a479b77ea26b706487ed81d = $(`<div id="html_781556bf7a479b77ea26b706487ed81d" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 12</b><br>(26.14911, 127.34734)</div>`)[0];
+            popup_37e0d9e373f3a838257ad86d6b5eec07.setContent(html_781556bf7a479b77ea26b706487ed81d);
+        
+
+        circle_marker_80d423c40e15fba74a5b29933098ecff.bindPopup(popup_37e0d9e373f3a838257ad86d6b5eec07)
+        ;
+
+        
+    
+    
+            var circle_marker_183d276b766ef966b1cb5ded9562dba2 = L.circleMarker(
+                [26.15755, 127.65612],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_b0175c48b4e55282c3f091b4efd2e4bb = L.popup({"maxWidth": "100%"});
+
+        
+            var html_eabab5f8271661d8a0fc36e329cdeeca = $(`<div id="html_eabab5f8271661d8a0fc36e329cdeeca" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 13</b><br>(26.15755, 127.65612)</div>`)[0];
+            popup_b0175c48b4e55282c3f091b4efd2e4bb.setContent(html_eabab5f8271661d8a0fc36e329cdeeca);
+        
+
+        circle_marker_183d276b766ef966b1cb5ded9562dba2.bindPopup(popup_b0175c48b4e55282c3f091b4efd2e4bb)
+        ;
+
+        
+    
+    
+            var circle_marker_d8cecc69a01b5724c906085465c6d23a = L.circleMarker(
+                [26.24557, 127.68788],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_8cc1471f1b8a1cd461e779326079d311 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f306f51a4b8a76fda3a035725d6d4464 = $(`<div id="html_f306f51a4b8a76fda3a035725d6d4464" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 14</b><br>(26.24557, 127.68788)</div>`)[0];
+            popup_8cc1471f1b8a1cd461e779326079d311.setContent(html_f306f51a4b8a76fda3a035725d6d4464);
+        
+
+        circle_marker_d8cecc69a01b5724c906085465c6d23a.bindPopup(popup_8cc1471f1b8a1cd461e779326079d311)
+        ;
+
+        
+    
+    
+            var circle_marker_a428f46e018e223927008bf59f16bd66 = L.circleMarker(
+                [26.43618, 127.82611],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_6b32f0fdef75ab75efc2dbd14843304e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_400a3e6f918042f1eb2a05729591fd59 = $(`<div id="html_400a3e6f918042f1eb2a05729591fd59" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 15</b><br>(26.43618, 127.82611)</div>`)[0];
+            popup_6b32f0fdef75ab75efc2dbd14843304e.setContent(html_400a3e6f918042f1eb2a05729591fd59);
+        
+
+        circle_marker_a428f46e018e223927008bf59f16bd66.bindPopup(popup_6b32f0fdef75ab75efc2dbd14843304e)
+        ;
+
+        
+    
+    
+            var circle_marker_06f7e788ea5182fc9e6a1eed2f442b23 = L.circleMarker(
+                [26.22787, 127.30142],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "pink", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(feature_group_70f2cb79b817945c278f75b45135dc30);
+        
+    
+        var popup_790867de79ae18a30811bffe871663cd = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2bce9d4fe91b6ae6cdda980e36cb8a19 = $(`<div id="html_2bce9d4fe91b6ae6cdda980e36cb8a19" style="width: 100.0%; height: 100.0%;"><b>Okinawa — Ponto 16</b><br>(26.22787, 127.30142)</div>`)[0];
+            popup_790867de79ae18a30811bffe871663cd.setContent(html_2bce9d4fe91b6ae6cdda980e36cb8a19);
+        
+
+        circle_marker_06f7e788ea5182fc9e6a1eed2f442b23.bindPopup(popup_790867de79ae18a30811bffe871663cd)
+        ;
+
+        
+    
+    
+            var feature_group_2d107b591a43c2a3fde67f6888a38baa = L.featureGroup(
+                {}
+            ).addTo(map_4f79d561fd93d84b6bd9cf2d13e72154);
+        
+    
+            var poly_line_fc701e2f6f80646da81923c32cf25071 = L.polyline(
+                [[33.50519, 130.51667], [33.51333, 130.51517], [33.51935, 130.53137], [33.88498, 130.87621], [33.89052, 130.8846], [33.87179, 130.80749], [33.94628, 130.96411], [33.9572, 130.96161]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_2d107b591a43c2a3fde67f6888a38baa);
+        
+    
+            poly_line_fc701e2f6f80646da81923c32cf25071.bindTooltip(
+                `<div>
+                     Rota Fukuoka
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var poly_line_897cf64f2064a38c6a415d485278c2d3 = L.polyline(
+                [[33.249, 130.30031], [33.25075, 130.29892], [33.2483, 130.3089]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_2d107b591a43c2a3fde67f6888a38baa);
+        
+    
+            poly_line_897cf64f2064a38c6a415d485278c2d3.bindTooltip(
+                `<div>
+                     Rota Saga
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var poly_line_3ae89acfd9ea76b93d9f01170c427173 = L.polyline(
+                [[33.03573, 129.91948], [32.75371, 129.86735], [32.93311, 129.95827], [33.16398, 129.72416], [32.9864, 129.11274], [32.74084, 130.26111]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_2d107b591a43c2a3fde67f6888a38baa);
+        
+    
+            poly_line_3ae89acfd9ea76b93d9f01170c427173.bindTooltip(
+                `<div>
+                     Rota Nagasaki
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var poly_line_bc186e693e0b4ba9079e2f5cdc16f33e = L.polyline(
+                [[31.99897, 131.25375], [32.0503, 130.80596], [32.67905, 131.21004], [32.66064, 131.38863], [32.42539, 131.62772], [32.48702, 131.67673], [32.19149, 131.52898], [32.16824, 131.47828], [31.9575, 131.12597], [31.98859, 131.32191], [31.36624, 131.3328], [31.73375, 131.1203], [32.43197, 131.46755], [31.72522, 131.06617], [31.8075, 131.45783], [32.50981, 131.33149], [31.58793, 131.4017], [32.22323, 131.16329], [32.6847, 131.80108], [32.10662, 131.40451], [32.45815, 131.15383], [32.0739, 131.49571], [32.70774, 131.30588], [31.90723, 130.96018], [32.11595, 131.53284], [32.2609, 131.55757]],
+                {"bubblingMouseEvents": true, "color": "orange", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "orange", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_2d107b591a43c2a3fde67f6888a38baa);
+        
+    
+            poly_line_bc186e693e0b4ba9079e2f5cdc16f33e.bindTooltip(
+                `<div>
+                     Rota Miyazaki
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var poly_line_b015d5e38467881f594c6b8a57a1947f = L.polyline(
+                [[31.22961, 130.65202], [31.23544, 130.64138], [31.23105, 130.64461], [31.26388, 130.66291], [31.23683, 130.64219], [31.23827, 130.645], [31.25527, 130.64763], [31.228, 130.65302], [31.23719, 130.64286]],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "purple", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_2d107b591a43c2a3fde67f6888a38baa);
+        
+    
+            poly_line_b015d5e38467881f594c6b8a57a1947f.bindTooltip(
+                `<div>
+                     Rota Kagoshima
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var poly_line_8539e7d26991df1ff7f72a93025df7bc = L.polyline(
+                [[26.31573, 127.75361], [26.28139, 127.73221], [26.33741, 124.15694], [26.13828, 127.66133], [26.37398, 126.78892], [24.73496, 125.26308], [26.69169, 127.87797], [26.58735, 127.98574], [26.21641, 127.68942], [26.16911, 127.82708], [26.32766, 127.803], [26.14911, 127.34734], [26.15755, 127.65612], [26.24557, 127.68788], [26.43618, 127.82611], [26.22787, 127.30142]],
+                {"bubblingMouseEvents": true, "color": "pink", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "pink", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_2d107b591a43c2a3fde67f6888a38baa);
+        
+    
+            poly_line_8539e7d26991df1ff7f72a93025df7bc.bindTooltip(
+                `<div>
+                     Rota Okinawa
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var feature_group_77a23430188d1671e24a860275d49d94 = L.featureGroup(
+                {}
+            ).addTo(map_4f79d561fd93d84b6bd9cf2d13e72154);
+        
+    
+            var marker_6b86ced68ddde193d93236a8ca9ba2f6 = L.marker(
+                [33.76108, 130.75715375000001],
+                {}
+            ).addTo(feature_group_77a23430188d1671e24a860275d49d94);
+        
+    
+            var div_icon_36236974b6fabb4af5e2ff626eb09a05 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"text-align:center; font-family: Arial, Helvetica, sans-serif; line-height:1;\"\u003e\n                 \u003cdiv style=\"font-size:14px; font-weight:700; color:#222;\"\u003eFukuoka\u003c/div\u003e\n                 \u003cdiv style=\"font-size:12px; color:#555;\"\u003e\u798f\u5ca1\u003c/div\u003e\n               \u003c/div\u003e"});
+            marker_6b86ced68ddde193d93236a8ca9ba2f6.setIcon(div_icon_36236974b6fabb4af5e2ff626eb09a05);
+        
+    
+            var marker_4e7016a50db164329b29a942d80f63c3 = L.marker(
+                [33.24935, 130.30271000000002],
+                {}
+            ).addTo(feature_group_77a23430188d1671e24a860275d49d94);
+        
+    
+            var div_icon_23de8159529758137eb8fd36843c01a9 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"text-align:center; font-family: Arial, Helvetica, sans-serif; line-height:1;\"\u003e\n                 \u003cdiv style=\"font-size:14px; font-weight:700; color:#222;\"\u003eSaga\u003c/div\u003e\n                 \u003cdiv style=\"font-size:12px; color:#555;\"\u003e\u4f50\u8cc0\u003c/div\u003e\n               \u003c/div\u003e"});
+            marker_4e7016a50db164329b29a942d80f63c3.setIcon(div_icon_23de8159529758137eb8fd36843c01a9);
+        
+    
+            var marker_637f333bdd3692446f09894d906ec980 = L.marker(
+                [32.935628333333334, 129.807185],
+                {}
+            ).addTo(feature_group_77a23430188d1671e24a860275d49d94);
+        
+    
+            var div_icon_c738b2493d39c888d35fdc04f5d62d5e = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"text-align:center; font-family: Arial, Helvetica, sans-serif; line-height:1;\"\u003e\n                 \u003cdiv style=\"font-size:14px; font-weight:700; color:#222;\"\u003eNagasaki\u003c/div\u003e\n                 \u003cdiv style=\"font-size:12px; color:#555;\"\u003e\u9577\u5d0e\u003c/div\u003e\n               \u003c/div\u003e"});
+            marker_637f333bdd3692446f09894d906ec980.setIcon(div_icon_c738b2493d39c888d35fdc04f5d62d5e);
+        
+    
+            var marker_e17c38e9d85194630842d0e83ac3239e = L.marker(
+                [32.16569346153846, 131.34502692307692],
+                {}
+            ).addTo(feature_group_77a23430188d1671e24a860275d49d94);
+        
+    
+            var div_icon_f7e067b68a39e07bcae17a50d46da830 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"text-align:center; font-family: Arial, Helvetica, sans-serif; line-height:1;\"\u003e\n                 \u003cdiv style=\"font-size:14px; font-weight:700; color:#222;\"\u003eMiyazaki\u003c/div\u003e\n                 \u003cdiv style=\"font-size:12px; color:#555;\"\u003e\u5bae\u5d0e\u003c/div\u003e\n               \u003c/div\u003e"});
+            marker_e17c38e9d85194630842d0e83ac3239e.setIcon(div_icon_f7e067b68a39e07bcae17a50d46da830);
+        
+    
+            var marker_ff3c840975d5861a0eaec4a46ea2f57a = L.marker(
+                [31.239504444444442, 130.64795777777778],
+                {}
+            ).addTo(feature_group_77a23430188d1671e24a860275d49d94);
+        
+    
+            var div_icon_9ab12c0059cb69d7d9a4000042e1b8ce = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"text-align:center; font-family: Arial, Helvetica, sans-serif; line-height:1;\"\u003e\n                 \u003cdiv style=\"font-size:14px; font-weight:700; color:#222;\"\u003eKagoshima\u003c/div\u003e\n                 \u003cdiv style=\"font-size:12px; color:#555;\"\u003e\u9e7f\u5150\u5cf6\u003c/div\u003e\n               \u003c/div\u003e"});
+            marker_ff3c840975d5861a0eaec4a46ea2f57a.setIcon(div_icon_9ab12c0059cb69d7d9a4000042e1b8ce);
+        
+    
+            var marker_bec0b56e7f8d7c9ae43c2f5315ea68a9 = L.marker(
+                [26.211890624999995, 127.272385625],
+                {}
+            ).addTo(feature_group_77a23430188d1671e24a860275d49d94);
+        
+    
+            var div_icon_e12aab868b0cf8e9f9fa8256367b56e2 = L.divIcon({"className": "empty", "html": "\u003cdiv style=\"text-align:center; font-family: Arial, Helvetica, sans-serif; line-height:1;\"\u003e\n                 \u003cdiv style=\"font-size:14px; font-weight:700; color:#222;\"\u003eOkinawa\u003c/div\u003e\n                 \u003cdiv style=\"font-size:12px; color:#555;\"\u003e\u6c96\u7e04\u003c/div\u003e\n               \u003c/div\u003e"});
+            marker_bec0b56e7f8d7c9ae43c2f5315ea68a9.setIcon(div_icon_e12aab868b0cf8e9f9fa8256367b56e2);
+        
+    
+            var layer_control_3008213040518b890275492e64c6906f = {
+                base_layers : {
+                    "cartodbpositron" : tile_layer_489b3bb99a66df3b6985a4505604d520,
+                },
+                overlays :  {
+                    "Pontos" : feature_group_70f2cb79b817945c278f75b45135dc30,
+                    "Rotas" : feature_group_2d107b591a43c2a3fde67f6888a38baa,
+                    "R\u00f3tulos" : feature_group_77a23430188d1671e24a860275d49d94,
+                },
+            };
+            L.control.layers(
+                layer_control_3008213040518b890275492e64c6906f.base_layers,
+                layer_control_3008213040518b890275492e64c6906f.overlays,
+                {"autoZIndex": true, "collapsed": false, "position": "topright"}
+            ).addTo(map_4f79d561fd93d84b6bd9cf2d13e72154);
+        
+</script>
+</html>
